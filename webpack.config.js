@@ -46,16 +46,17 @@ const babelOptions = (preset) => {
 module.exports = {
   context: path.resolve(__dirname, "src"), //из этой папки webpack будет брать файлы
   mode: "development",
-  entry: {
-    main: ["@babel/polyfill", "./index.jsx"],
-  },
+  entry:
+    /*{
+    main: ["@babel/polyfill", */ "./index.tsx" /*],
+  }*/,
   output: {
     filename: filename("js"), //pattern webpack
     path: path.resolve(__dirname, "dist"), //работа с путями :куда складывать вебпак
   },
 
   resolve: {
-    extensions: [".js", ".jsx", ".json", ".png", ".ts"],
+    extensions: [".js", ".jsx", ".json", ".png", ".ts", ".tsx"],
     alias: {
       "@models": path.resolve(__dirname, "src/models"),
       "@": path.resolve(__dirname, "src"),
@@ -131,6 +132,20 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: babelOptions("@babel/preset-typescript"),
+        },
+      },
+      {
+        test: /\.(ts|js)x?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-typescript",
+            ],
+          },
         },
       },
       {
